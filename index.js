@@ -5,19 +5,27 @@ function cipher(msg, keyword) {
     return getEncipheredMessage(keyword, chunkArray);
 }
 function getEncipheredMessage(keyword, chunkArray) {
-    let indexOfKeywordArray = new Array(keyword.length).fill(0);
-    let alphabets = "abcdefghijklmnopqrstuvwxyz";
-    let count = 1;
-    for (let i = 0; i < alphabets.length; i++) {
-        if (keyword.includes(alphabets[i])) {
-            let temp = keyword.indexOf(alphabets[i]);
-            indexOfKeywordArray[temp] = count;
-            count++;
-        }
+     let charCodeArray=[];
+    for(let i=0;i<keyword.length;i++){
+        charCodeArray.push(keyword.charCodeAt(i));
     }
+    // console.log("charCodeArray=");
+    // console.log(charCodeArray);
+    charCodeArray.sort(function(a, b){return a-b});
+    // console.log(charCodeArray);
+    // let indexOfKeywordArray = new Array(keyword.length).fill(0);
+    // let alphabets = "abcdefghijklmnopqrstuvwxyz";
+    // let count = 1;
+    // for (let i = 0; i < alphabets.length; i++) {
+    //     if (keyword.includes(alphabets[i])) {
+    //         let temp = keyword.indexOf(alphabets[i]);
+    //         indexOfKeywordArray[temp] = count;
+    //         count++;
+    //     }
+    // }
     let output = "";
-    for (let i = 1; i <= keyword.length; i++) {
-        let temp = indexOfKeywordArray.indexOf(i);
+    for (let i = 0; i < charCodeArray.length; i++) {
+        let temp = keyword.indexOf(String.fromCharCode(charCodeArray[i]));
         for (let j = 0; j < chunkArray.length; j++) {
             output = output + chunkArray[j][temp];
         }
