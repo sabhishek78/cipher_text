@@ -1,6 +1,6 @@
 function cipher(msg, keyword) {
     let message = msg.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g, "").toLowerCase();
-    message = fillXs(message, keyword);
+    message = (message.length % keyword.length !== 0)? message.padEnd(message.length+keyword.length - (message.length % keyword.length),'x'):message;
     let chunkArray = divideIntoChunks(message, keyword);
     return getEncipheredMessage(keyword, chunkArray);
 }
@@ -9,20 +9,7 @@ function getEncipheredMessage(keyword, chunkArray) {
     for(let i=0;i<keyword.length;i++){
         charCodeArray.push(keyword.charCodeAt(i));
     }
-    // console.log("charCodeArray=");
-    // console.log(charCodeArray);
     charCodeArray.sort(function(a, b){return a-b});
-    // console.log(charCodeArray);
-    // let indexOfKeywordArray = new Array(keyword.length).fill(0);
-    // let alphabets = "abcdefghijklmnopqrstuvwxyz";
-    // let count = 1;
-    // for (let i = 0; i < alphabets.length; i++) {
-    //     if (keyword.includes(alphabets[i])) {
-    //         let temp = keyword.indexOf(alphabets[i]);
-    //         indexOfKeywordArray[temp] = count;
-    //         count++;
-    //     }
-    // }
     let output = "";
     for (let i = 0; i < charCodeArray.length; i++) {
         let temp = keyword.indexOf(String.fromCharCode(charCodeArray[i]));
@@ -40,20 +27,6 @@ function divideIntoChunks(message, keyword) {
         i = i + keyword.length;
     }
     return chunkArray;
-}
-function fillXs(message, keyword) {
-    if (message.length % keyword.length !== 0) {
-        let messageArray = message.split("");
-        for (
-            let i = 0;
-            i < keyword.length - (message.length % keyword.length);
-            i++
-        ) {
-            messageArray.push("x");
-        }
-        message = messageArray.join("");
-    }
-    return message;
 }
 console.log(
     cipher("Meet me by the lake at midnight. Bring shovel.", "python") ===
